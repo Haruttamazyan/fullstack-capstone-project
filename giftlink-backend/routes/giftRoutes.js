@@ -1,11 +1,12 @@
+const express = require('express');
+const router = express.Router();
 const connectToDatabase = require("../models/db");
 
 router.get('/', async (req, res) => {
     try {
-        const db = connectToDatabase()
-
+        const db = await connectToDatabase()
         const collection = db.collection('gifts')
-        const gifts = collection.find()
+        const gifts = await collection.find().toArray()
 
         res.json(gifts);
     } catch (e) {
@@ -16,14 +17,14 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const db = connectToDatabase()
+        const db = await connectToDatabase()
 
         const collection = db.collection('gifts')
         
 
         const id = req.params.id;
 
-        const gift = collection.find({id})
+        const gift = await collection.find({id})
 
         if (!gift) {
             return res.status(404).send('Gift not found');
