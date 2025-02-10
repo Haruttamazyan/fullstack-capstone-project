@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import DetailsPage from './components/DetailsPage/DetailsPage';
 import LoginPage from './components/login';
 import RegisterPage from './components/register';
+import SearchPage from './components/SearchPage/SearchPage';
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
           <Route path="/app/product/:productId" element={<DetailsPage />} />
           <Route path="/app/login" element={<LoginPage/>} />
           <Route path="/app/register" element={<RegisterPage />} />
+          <Route path="/app/search" element={<SearchPage/>} />
+
         </Routes>
         </>
   );

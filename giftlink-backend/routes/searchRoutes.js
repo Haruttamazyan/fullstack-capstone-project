@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const connectToDatabase = require('../models/db');
 
-// Search for gifts
 router.get('/', async (req, res, next) => {
     try {
-        const db = connectToDatabase()
+        const db = await connectToDatabase()
 
         const collection = db.collection("gifts");
 
