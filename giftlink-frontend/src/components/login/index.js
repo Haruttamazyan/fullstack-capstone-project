@@ -1,14 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {urlConfig} from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [incorrect, setIncorrect] = useState('');
+
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
+
+    useEffect(() => {
+        if (sessionStorage.getItem('auth-token')) {
+          navigate('/app')
+        }
+      }, [navigate])
+
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        sessionStorage.setItem("auth-token", "test-token")
+        try {
+            e.preventDefault();
+            const res = await fetch(`${urlConfig.backendUrl}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                })
+            });
+            if(!res.ok){
+                console.log(res.statusText)
+                if(res.status == 404) {
+                    const message = await res.json()
+                    console.log(message)
+                    throw new Error(message.error)
+                }
+                throw new Error(res.statusText)
+            }
+            const json = await res.json();
+            console.log('Json',json);
+            if (json.authtoken) {
+                sessionStorage.setItem('auth-token', json.authtoken);
+                sessionStorage.setItem('name', json.userName);
+                sessionStorage.setItem('email', json.userEmail);
+                setIsLoggedIn(true);
+                navigate('/app');
+            }
+        } catch(e) {
+            setEmail('')
+            setPassword('')
+            setIncorrect(e.message);
+            setTimeout(() => {
+                setIncorrect("");
+            }, 2000);
+        }
+        
     }
 
         return (
@@ -39,6 +90,7 @@ function LoginPage() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+                <span style={{color:'red',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'12px'}}>{incorrect}</span>
                 <button className="btn btn-primary w-100 mb-3" onClick={handleLogin}>Login</button>
                 <p className="mt-4 text-center">
                     New here? <a href="/app/register" className="text-primary">Register Here</a>

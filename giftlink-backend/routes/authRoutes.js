@@ -50,7 +50,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.login('/register', async (req, res) => {
+router.post('/login', async (req, res) => {
     try{
         const db = await connectToDatabase();
         const collection = db.collection("users");
@@ -66,12 +66,12 @@ router.login('/register', async (req, res) => {
 
             let payload = {
                 user: {
-                    id: theUser._id.toString(),
+                    id: user._id.toString(),
                 },
             };
             const authtoken = jwt.sign(payload, JWT_SECRET);
             logger.info('User logged in successfully');
-            return res.status(200).json({ authtoken, userName: user.userName, email });
+            return res.status(200).json({ authtoken, userName: user.firstName, email });
         }
         else {
             logger.error('User not found');
@@ -79,6 +79,7 @@ router.login('/register', async (req, res) => {
         }
         
     } catch(e) {
+        console.log(e.message)
         return res.status(500).send('Internal server error');
     }
 });
