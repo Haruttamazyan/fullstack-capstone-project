@@ -33,6 +33,7 @@ function RegisterPage() {
       });
 
       if (!res.ok) {
+        // eslint-disable-next-line eqeqeq
         throw new Error(res.status == 404 ? 'User exist' : 'Unexpected Error');
       }
       const json = await res.json();

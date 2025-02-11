@@ -33,6 +33,7 @@ function LoginPage() {
       });
       if (!res.ok) {
         console.log(res.statusText);
+        // eslint-disable-next-line eqeqeq
         if (res.status == 404) {
           const message = await res.json();
           console.log(message);
