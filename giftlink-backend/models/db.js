@@ -6,20 +6,20 @@ const MongoClient = require('mongodb').MongoClient;
 let url = `${process.env.MONGO_URL}`;
 
 let dbInstance = null;
-const dbName = "giftdb";
+const dbName = 'giftdb';
 
 async function connectToDatabase() {
-    if (dbInstance){
-        return dbInstance
-    };
+  if (dbInstance) {
+    return dbInstance;
+  }
 
-    const client = new MongoClient(url);      
+  const client = new MongoClient(url);
 
-    await client.connect()
+  await client.connect();
 
-    dbInstance = client.db(dbName)
+  dbInstance = client.db(dbName);
 
-    return dbInstance
+  return dbInstance;
 }
 
 module.exports = connectToDatabase;

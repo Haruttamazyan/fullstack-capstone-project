@@ -4,7 +4,6 @@ about: This tempalte defines user story
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **As a** [role]
@@ -12,9 +11,11 @@ assignees: ''
 **So that** [benefit]
 
 ### Details and Assumptions
+
     * [document what you know]
 
 ### Acceptance Criteria
+
     gherkin
     Given [some context]
     When [certain action is taken]
