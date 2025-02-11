@@ -33,6 +33,7 @@ app.use('/api/gifts',giftroutes)
 
 
 app.use('/api/search',searchRoutes)
+app.use('/api/auth', require('./routes/authRoutes'))
 
 
 // Global Error Handler
